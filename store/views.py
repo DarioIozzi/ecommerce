@@ -13,16 +13,16 @@ def home(request):
             if form.is_valid():
                 ricerca = form.cleaned_data["ricerca"]
                 prodottiTrovati = prodotto.objects.filter((Q(nome__contains=ricerca) | Q(descrizione__contains=ricerca) | Q(categoria__contains=ricerca)) &Q(visibile=True))
-                return render(request, 'store/home.html', {"form": form, "prodottiTrovati": prodottiTrovati, "prodottiInVendita": prodotti})
+                return render(request, '/home.html', {"form": form, "prodottiTrovati": prodottiTrovati, "prodottiInVendita": prodotti})
         else:
             form = cercaProdottoForm()
-            return render(request, "store/home.html", {"form": form, "prodottiInVendita": prodotti})
+            return render(request, "/home.html", {"form": form, "prodottiInVendita": prodotti})
     else:
         form = cercaProdottoForm()
-        return render(request, "store/home.html", {"form": form, "prodottiInVendita": prodotti})
+        return render(request, "/home.html", {"form": form, "prodottiInVendita": prodotti})
 
 def cliente(response):
-    return render(response, 'store/cliente.html', {})
+    return render(response, '/cliente.html', {})
 
 def aggiungiProdotto(request):
     if request.method == "POST":
@@ -40,7 +40,7 @@ def aggiungiProdotto(request):
             print("Form non valido")
     else:
         form = aggiungiProdottoForm()
-    return render(request, "store/aggiungiProdotto.html", {"form":form})
+    return render(request, "/aggiungiProdotto.html", {"form":form})
 
 def gestioneProdotti(request):
     prodotti = prodotto.objects.all()
@@ -52,9 +52,9 @@ def gestioneProdotti(request):
                 return HttpResponseRedirect("/aggiungiProdotti")
             if "modificarProdottoForm" in request.POST:
                 form = modificaProdottoForm()
-                return render(request, 'store/modificaProdotto.html', {"pDaGestire": pDaGestire, "form": form})
+                return render(request, '/modificaProdotto.html', {"pDaGestire": pDaGestire, "form": form})
             if "annullaModifiche" in request.POST:
-                return render(request, 'store/gestioneProdotti.html', {"prodotti": prodotti})
+                return render(request, '/gestioneProdotti.html', {"prodotti": prodotti})
             if "salvaModifiche" in request.POST:
                 form = modificaProdottoForm(request.POST)
                 if form.is_valid():
@@ -66,17 +66,17 @@ def gestioneProdotti(request):
                     if form.cleaned_data["nuovoPrezzo"] != "":
                         pDaGestire.prezzo = form.cleaned_data["nuovoPrezzo"]
                     pDaGestire.save()
-                return render(request, "store/gestioneProdotti.html", {"prodotti": prodotti})
+                return render(request, "/gestioneProdotti.html", {"prodotti": prodotti})
             if "modificaVisibilità" in request.POST:
                 if pDaGestire.visibile:
                     pDaGestire.visibile = False
                 else:
                     pDaGestire.visibile = True
                 pDaGestire.save()
-                return render(request, "store/gestioneProdotti.html", {"prodotti": prodotti})
-            return render(request, "store/gestioneProdotti.html", {"prodotti": prodotti})
+                return render(request, "/gestioneProdotti.html", {"prodotti": prodotti})
+            return render(request, "/gestioneProdotti.html", {"prodotti": prodotti})
         else:
-            return render(request, "store/gestioneProdotti.html")
+            return render(request, "/gestioneProdotti.html")
     else:
         return HttpResponseRedirect("/login")
 
@@ -130,7 +130,7 @@ def effettuaOrdine(request):
         nuovoProdOrd = ordineProdotto(prodotto=prod.prodotto, ordine=nuovoOrdine, quantita=prod.quantita)
         nuovoProdOrd.save()
         prod.delete()
-    return render(request, "store/pagamento.html", {"nuovoOrdine": nuovoOrdine})
+    return render(request, "/pagamento.html", {"nuovoOrdine": nuovoOrdine})
 
 def revisioneOrdine(request):
     if request.method == "POST":
@@ -153,7 +153,7 @@ def revisioneOrdine(request):
         prodCarrello = carrello.objects.filter(cliente=request.user)
         tot = prodCarrello.annotate(subtotale=F("quantita")*F("prodotto__prezzo")).aggregate(Sum("subtotale"))["subtotale__sum"] or 0
 
-        return render(request, "store/revisioneOrdine.html", {"daRevisionare":prodCarrello, "totale":tot})
+        return render(request, "/revisioneOrdine.html", {"daRevisionare":prodCarrello, "totale":tot})
 
 def gestioneCarrello(request):
     if request.user.is_authenticated:
@@ -175,9 +175,9 @@ def gestioneCarrello(request):
             return HttpResponseRedirect("/carrello")
         carrelloCliente = carrello.objects.filter(cliente=request.user).select_related("prodotto")
         tot =carrelloCliente.annotate(subtotale=F('quantita') * F('prodotto__prezzo')).aggregate(Sum('subtotale'))['subtotale__sum'] or 0
-        return render(request, 'store/carrello.html', {"carrelloCliente": carrelloCliente, "totale": tot})
+        return render(request, '/carrello.html', {"carrelloCliente": carrelloCliente, "totale": tot})
     else:
-        return render(request, 'store/carrello.html', {})
+        return render(request, '/carrello.html', {})
 
 def salvaPagamento(request):
     if request.method == "POST":
@@ -195,10 +195,10 @@ def vediOrdine(request):
         daVedere = ordine.objects.get(id=idOrd)
         prodOrd = ordineProdotto.objects.prefetch_related('prodotto').filter(ordine=idOrd)
         tot = prodOrd.annotate(subtotale=F('quantita') * F('prodotto__prezzo')).aggregate(Sum('subtotale'))['subtotale__sum'] or 0
-        return render(request ,  "store/vediOrdine.html" , {"ordineDaVedere": daVedere , "prodottiOrdine" : prodOrd , "totale": tot})
+        return render(request ,  "/vediOrdine.html" , {"ordineDaVedere": daVedere , "prodottiOrdine" : prodOrd , "totale": tot})
     else:
-        return render(request, "store/vediOrdine.html", {})
+        return render(request, "/vediOrdine.html", {})
 
 def cronologiaOrdini(request):
     ordini = ordine.objects.filter(cliente=request.user)
-    return render(request ,  "store/vediStoricoOrdini.html" , {"ordini":ordini })
+    return render(request ,  "/vediStoricoOrdini.html" , {"ordini":ordini })
