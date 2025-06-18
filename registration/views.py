@@ -11,4 +11,4 @@ def registrationView(response):
         else:
             form = RegistrationForm()
 
-    return render(response, 'registration/registration.html', {"form" : form})
+    return render(response, 'registration.html', {"form" : form})
