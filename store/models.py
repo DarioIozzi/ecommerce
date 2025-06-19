@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 # Create your models here.
 
@@ -14,7 +14,7 @@ class prodotto(models.Model):
         return self.nome + " | " + self.descrizione + " , prezzo: " + str(self.prezzo) + "€"
 
 class ordine(models.Model):
-    cliente = models.ForeignKey(User, on_delete=models.CASCADE)
+    cliente = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     data = models.DateTimeField(auto_now_add=True)
     carta = models.CharField(max_length=16, default="0000000000000000")
     cvv = models.CharField(max_length=3, default="000")
@@ -33,7 +33,7 @@ class ordineProdotto(models.Model):
 
 class carrello(models.Model):
     prodotto = models.ForeignKey(prodotto, on_delete=models.CASCADE)
-    cliente = models.ForeignKey(User, on_delete=models.CASCADE)
+    cliente = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     quantita = models.IntegerField()
 
     def __str__(self):
