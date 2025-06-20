@@ -115,7 +115,7 @@
 
                     </li>
                     <li>
-                        <form class="aSidenav hoverform" action="logout/" method="post" style="display:inline; padding: 6px 8px 6px 18px">
+                        <form class="aSidenav hoverform" action="{% url 'logout' %}" method="post" style="display:inline; padding: 6px 8px 6px 18px">
                             {% csrf_token %}
                             <button type="submit" class="aSidenav" style="border: none; background: none; padding: 0; cursor: pointer; display: flex; align-items: center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="black" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
