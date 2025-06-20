@@ -1,10 +1,125 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block styleCSS %} 
+    <style>
+        .formRicerca{
+            margin-bottom: 15px;
+        }
+        .form-prodotto{
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f2f2f2;
+        }
+        .testoCentrato{
+            text-align: center;
+        }
+        .singoloProdotto{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding : 10px;
+            border: 1px solid black;
+            border-radius: 10px;
+        }
+        .singoloCampoProdotto{
+            margin-bottom: 5px;
+        }
+        input{
+            border: 1px solid black;
+            border-radius: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block title%} 
+Home Page
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="mt-2">Ricerca un prodotto o una categoria</h1>
+    <form class="formRicerca" action="#" method="POST">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" name="ricerca" value="Cerca">
+    </form>    
+    {% if prodottiTrovati %}
+        <div class=" form-prodotto">
+            {% for prodotto in prodottiTrovati %}
+                <form method="post" action="/gestioneAcquisto" class="form-group">
+                    {% csrf_token %}
+
+                    <div class="singoloProdotto">
+                        <input type="hidden" name="idProdotto" value="{{prodotto.id}}">
+                        <div class="singoloCampoProdotto">
+                            <h5>{{prodotto.nome}}</h5>
+                        </div>
+                        <div class="singoloCampoProdotto">
+                            <span>{{prodotto.descrizione}}</span>
+                        </div>
+                        <div class="singoloCampoProdotto">
+                            <h6>{{prodotto.prezzo}}€</h6>
+                        </div>
+                        <div class="singoloCampoProdotto">
+                            <h6 >{{ prodotto.categoria }}</h6>
+                        </div>
+                        <div class="singoloCampoProdotto">
+                            <input class="testoCentrato" type="number" name="numeroPezzi" placeholder="Inserisci la quantità">
+                        </div>
+
+                        <div class="singoloCampoProdotto">
+                            <button type="submit" name="acquistaOraButton" class="btn btn-primary">Acquista ora</button>
+                            <button type="submit" name="aggiungiAlCarrelloButton" class="btn btn-primary">aggiungi al carrello</button>
+                        </div>
+                    </div>
+
+                </form>
+            {% endfor %}
+        </div>
+    {% else %}
+        {% if request.method == 'POST'%}
+            <h3 class="mt-2">Nessun prodotto trovato</h3>
+        {% endif %}    
+    {% endif %}
+
+    <hr class="mt-0 mb-4">
+
+    <h1 class="mt-2">Vetrina</h1>
+    {% if prodottiInVendita %}
+        {% for prodotto in prodottiInVendita %}
+            <form method="post" action="/gestioneAcquisto" class="form-group form-orizzontale">
+                {% csrf_token %}
+                <div class="singoloProdotto">
+                    <input type="hidden" name="idProdotto" value="{{prodotto.id}}">
+                    <div class="singoloCampoProdotto">
+                        <h5>{{prodotto.nome}}</h5>
+                    </div>
+                    <div class="singoloCampoProdotto">
+                        <span>{{prodotto.descrizione}}</span>
+                    </div>
+                    <div class="singoloCampoProdotto">
+                        <h6>{{prodotto.prezzo}}€</h6>
+                    </div>
+                    <div class="singoloCampoProdotto">
+                        <h6 >{{ prodotto.categoria }}</h6>
+                    </div>
+                    <div class="singoloCampoProdotto">
+                        <input class="testoCentrato" type="number" name="numeroPezzi" placeholder="Inserisci la quantità">
+                    </div>
+
+                    <div class="singoloCampoProdotto">
+                        <button type="submit" name="acquistaOraButton" class="btn btn-primary">Acquista ora</button>
+                        <button type="submit" name="aggiungiAlCarrelloButton" class="btn btn-primary">Aggiungi al carrello</button>
+                    </div>
+                </div>
+            </form>
+        {% endfor %}
+    {% else %}
+        <h2 class="mt-2">Nessun prodotto in vendita</h2>
+    {% endif %}
+    
+{% endblock %}

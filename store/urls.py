@@ -27,4 +27,6 @@ urlpatterns = [
     path("vediOrdine/", views.vediOrdine, name="vediOrdine"),
 
     path("cronologiaOrdini/", views.cronologiaOrdini, name="cronologiaOrdini"),
+
+    path('carrello/',views.gestioneCarrello, name='viewCarrello'),
 ]

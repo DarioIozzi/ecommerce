@@ -1,10 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block styleCSS %}
+    <style>
+
+        .campo{
+            margin: 20px;
+        }
+        .bottoniSubmit{
+            display: flex;
+            flex-direction: row;
+        }
+        .bottone{
+           margin-right : 10px;
+        }
+    </style>
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block title%}
+    Modifica prodotto
+{% endblock %}
+
+
+{% block content %}
+    <h3 >Modifica prodotto</h3>
+    <form method="post" action="/gestioneProdotti/">
+        {% csrf_token %}
+        <div>
+            <input type="hidden" name="idProdotto" value="{{ prodottoDaModificare.id }}">
+            <div class="campo">
+                <p>Modifica Nome prodotto</p>
+                <input type="text" name="nuovoNome" placeholder="{{prodottoDaModificare.nome}}" class="form-control">
+            </div>
+            <div class="campo">
+                <p>Modifica Descrizione prodotto</p>
+                <input type="text" name="nuovaDescrizione" placeholder="{{ prodottoDaModificare.descrizione }}" class="form-control" >
+            </div>
+            <div class="campo">
+                <p>Modifica Prezzo prodotto</p>
+                <input type="number" step="any" name="nuovoPrezzo" placeholder="{{ prodottoDaModificare.prezzo }} €" class="form-control">
+            </div>
+            <div class="bottoniSubmit">
+                <button type="submit" name="annullaModifiche" class="btn btn-primary bottone">Annulla modifiche</button>
+                <button type="submit" name="salvaModifiche" class="btn btn-primary bottone">Salva modifiche</button>
+            </div>
+        </div>
+
+
+    </form>
+
+
+
+{% endblock %}
+
+

@@ -1,10 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block styleCSS %} 
+    <style>
+        .bottoneModificatore{
+            border: none;
+        }
+
+        .form-orizzontale{
+            display: flex;
+            flex-direction: row;
+        }
+    </style>
+{% endblock %}
+
+{% block title%} 
+Revisione dell'Ordine
+{% endblock %}
+
+{% block content %}
+    <h1>Revisione dell'Ordine</h1>
+
+    {% for prodotto in ordineDaRevisionare %}
+        
+        <form method="post" action="#" class="form-group form-orizzontale">
+            {% csrf_token %}
+            <input type="hidden" name="idProdotto" value="{{prodotto.id}}">
+            <span class="input-group-text" >{{ prodotto.quantita }}x</span>
+            <span class="input-group-text" >{{ prodotto.prodotto }}</span>
+            <button class="bottoneModificatore" type="submit" name="diminuisciQuantitaOggetto"><span class="input-group-text">-</span></button>
+            <button class="bottoneModificatore" type="submit" name="aumentaQuantitaOggetto"><span class="input-group-text">+</span></button>
+            <button class="bottoneModificatore" type="submit" name="rimuoviOggetto"><span class="input-group-text">X</span></button>
+            
+        </form>
+        
+    {% endfor %}
+            
+    <h3>Totale: {{ totale }} €</h3>
+
+    <form method="post" action="effettuaOrdine" class="form-group">
+        {% csrf_token %}
+        
+        <button type="submit" class="btn btn-primary">Conferma e vai al pagamento</button>
+    </form>  
+    
+{% endblock %}
+

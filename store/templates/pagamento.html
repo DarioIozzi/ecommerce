@@ -1,10 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block styleCSS %}
+    <style>
+        .form-pagamento{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f2f2f2;
+        }
+        .elementoForm{
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .spanElemntoForm{
+            margin-right: 10px;
+        }
+
+    </style>
+{% endblock %}
+
+{% block title%} 
+Pagamento
+{% endblock %}
+
+{% block content %}
+
+    <form method="POST" action="salvaPagamento" class="form-pagamento">
+        {% csrf_token %}
+
+        <!-- Mostra i dettagli dell'ordine -->
+        <h4>Dettagli dell'ordine</h4>
+        <p>ID ordine : {{ nuovoOrdine.id }}</p>
+        <p>Totale: {{ totale }}€</p>
+
+        <!-- Campi per i dati del pagamento -->
+        <h4>Informazioni per il pagamento</h4>
+        <input type="hidden" name="idOrdine" value="{{ nuovoOrdine.id }}">
+        <div class="elementoForm">
+            <span class="spanElemntoForm">Numero della Carta :</span>
+            <input type="text" name="numeroCarta" >
+        </div>
+        <div class="elementoForm">
+            <span class="spanElemntoForm">Data di Scadenza :</span>
+            <input type="date" name="dataScadenzaCarta" placeholder="MM/AAAA" >
+        </div>
+        <div class="elementoForm">
+            <span class="spanElemntoForm">CVV :</span>
+            <input type="text" name="cvvCarta" >
+        </div>
+
+
+        <!-- Pulsante di invio per elaborare il pagamento -->
+        <button type="submit" name="salvaPagamento" class="btn btn-primary">Paga Ora</button>
+    </form>
+
+
+
+{% endblock %}

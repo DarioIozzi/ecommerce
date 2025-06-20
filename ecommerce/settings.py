@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'registration.apps.RegistrationConfig',
     'store.apps.StoreConfig',
+    'crispy_forms',
+    'crispy_bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +126,11 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'registration.CustomUser'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = ["bootstrap4"]
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+REGISTRATION_REDIRECT_URL="/login/"
+
+LOGIN_REDIRECT_URL="/cliente/"
+LOGOUT_REDIRECT_URL="/"

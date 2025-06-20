@@ -1,10 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block styleCSS %} 
+    <style>
+        .bottoneModificatore{
+            border: none;
+        }
+
+        .form-orizzontale{
+            display: flex;
+            flex-direction: row;
+        }
+    </style>
+{% endblock %}  
+
+{% block title%} 
+    {% if user.is_authenticated %}
+        profilo - {{user.username}}
+    {% endif %}	
+{% endblock %}
+
+{% block content %}    
+    {% if user.is_authenticated %}
+        <h1>Carrello di {{user.username }}</h1>
+        {% if carrelloCliente  %}
+            {% for item in carrelloCliente %}
+                
+                <form method="post" action="#" class="form-group form-orizzontale">
+                    {% csrf_token %}
+                    <input type="hidden" name="idProdotto" value="{{item.id}}">
+                    <span class="input-group-text" >{{ item.quantita }}x</span>
+                    <span class="input-group-text" >{{ item.prodotto }}</span>
+                    <button class="bottoneModificatore" type="submit" name="diminuisciQuantitaOggetto"><span class="input-group-text" id="basic-addon2">-</span></button>
+                    <button class="bottoneModificatore" type="submit" name="aumentaQuantitaOggetto"><span class="input-group-text" id="basic-addon1">+</span></button>
+                    <button class="bottoneModificatore" type="submit" name="rimuoviOggetto"><span class="input-group-text">X</span></button>
+                </form>
+                
+            {% endfor %}
+            
+
+            <h3>Totale: {{ totale }} €</h3>
+            
+            
+            <form action="revisioneOrdine" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Procedi con l'ordine</button>
+            </form>
+        {% else %}
+            <h3>Il carrello è vuoto</h3>
+        {% endif %}
+    {% else %}
+        <h3>Non sei autenticato</h3>
+        <a href="login/" class="btn btn-primary">Login</a>
+        <a href="registration/" class="btn btn-primary">Registrati</a>
+    {% endif %}
+{% endblock %}

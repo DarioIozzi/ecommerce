@@ -1,10 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block styleCSS %}
+    <style>
+        .singoloProdotto{
+            display: flex;
+            width: 500px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: left;
+            padding : 10px;
+            margin-bottom: 10px;
+            border: 1px solid black;
+            border-radius: 10px;
+
+        }
+        .singoloCampoProdotto{
+            margin-bottom: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block title%} 
+Ordine
+{% endblock %}
+
+{% block content %}
+    
+    <h1>{{ordineDaVedere}}</h1>
+    <h4>Pagato con : </h4>
+    <p>Numero Carta : {{ ordineDaVedere.numeroCarta }}</p>
+    <p>Data di Scadenza : {{ ordineDaVedere.scadenzaCarta }}</p>
+    <p>CVV : {{ ordineDaVedere.cvv }}</p>
+    <h4>Prodotti </h4>
+    {% for prodotto in prodottiDellOrdine %}
+        <div class="singoloProdotto">
+            <input type="hidden" name="idProdotto" value="{{prodotto.id}}">
+            <div class="singoloCampoProdotto">
+                <h6>{{prodotto.prodotto.nome}}</h6>
+            </div>
+            <div class="singoloCampoProdotto">
+                <span>{{prodotto.prodotto.descrizione}}</span>
+            </div>
+            <div class="singoloCampoProdotto">
+                <h6>{{prodotto.prodotto.prezzo}}€</h6>
+            </div>
+            <div class="singoloCampoProdotto">
+                <h6>Quantita : {{prodotto.quantita}}</h6>
+            </div>
+
+        </div>
+    {% endfor %}
+
+    <h3>Totale: {{ totale }} €</h3>
+
+
+    
+
+{% endblock %}

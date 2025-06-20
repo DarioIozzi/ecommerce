@@ -1,10 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block styleCSS %} 
+    <style>
+        .bottoneModificatore{
+            border: none;
+        }
+
+        .form-orizzontale{
+            margin-top: 15px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .infoProdotto{
+            display: flex;
+            flex-direction: column;
+        }
+        .tastiFunzione{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .prodottoVisibile{
+            background-color: green;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+        .prodottoNonVisibile{
+            background-color: red;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+        .modVis{
+            margin-left: 10px;
+        }
+        .grassetto{
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+{% block title%} 
+    Gestione Prodotti	
+{% endblock %}
+
+{% block content %}
+
+    <a class="btn btn-primary" href="/nuovoProdotto" role="button">Nuovo Prodotto</a>
+
+    {% if prodottiSalvati  %}
+        {% for prodotto in prodottiSalvati %}
+            
+            <form method="post" action="#" class=" form-orizzontale">
+                {% csrf_token %}
+
+                <input type="hidden" name="idProdotto" value="{{prodotto.id}}">
+
+                <div class="infoProdotto form-group">
+                    <h5 >{{ prodotto.nome}}</h5>
+                    <span >{{ prodotto.descrizione}}</span>
+                    <span >{{ prodotto.prezzo}}€</span>
+                    <span class="grassetto" >{{ prodotto.categoria }}</span>
+                </div>
+                <div class="tastiFunzione">
+                    <button class="btn btn-light modVis" type="submit" name="modificaProdotto">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wrench" viewBox="0 0 16 16">
+                            <path d="M.102 2.223A3.004 3.004 0 0 0 3.78 5.897l6.341 6.252A3.003 3.003 0 0 0 13 16a3 3 0 1 0-.851-5.878L5.897 3.781A3.004 3.004 0 0 0 2.223.1l2.141 2.142L4 4l-1.757.364L.102 2.223zm13.37 9.019.528.026.287.445.445.287.026.529L15 13l-.242.471-.026.529-.445.287-.287.445-.529.026L13 15l-.471-.242-.529-.026-.287-.445-.445-.287-.026-.529L11 13l.242-.471.026-.529.445-.287.287-.445.529-.026L13 11l.471.242z"/>
+                            </svg>
+                        </span>
+                    </button>
+
+                    {% if prodotto.visibile %}
+                        <span class="prodottoVisibile"></span>
+                    {% else %}
+                        <span class="prodottoNonVisibile"></span>
+                    {% endif %}
+
+                    <button class="btn btn-light modVis" type="submit" name="modificaVisibilitaProdotto">
+                        <span> Modifica Visibilita</span>
+                    </button>
+                </div>
+            </form>
+            
+        {% endfor %}
+
+
+    {% else %}
+        <h3>Non ci sono prodotti salvati nel database</h3>
+    {% endif %}
+
+    
+
+{% endblock %}

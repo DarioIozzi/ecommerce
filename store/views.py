@@ -201,4 +201,4 @@ def vediOrdine(request):
 
 def cronologiaOrdini(request):
     ordini = ordine.objects.filter(cliente=request.user)
-    return render(request ,  "vediStoricoOrdini.html" , {"ordini":ordini })
+    return render(request ,  "cronologiaOrdini.html" , {"ordini":ordini })
