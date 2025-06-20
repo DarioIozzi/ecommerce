@@ -1,4 +1,10 @@
 credenziali admin
 
-username iozzi
-paswword 1234
+username: iozzi
+password: 1234
+
+
+credenziali di un utente
+
+username: pippo
+password: paperino12

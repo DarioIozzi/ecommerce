@@ -8,7 +8,7 @@ def registrationView(response):
         if form.is_valid():
             form.save()
             return redirect("/login")
-        else:
-            form = RegistrationForm()
+    else:
+        form = RegistrationForm()
 
     return render(response, 'registration.html', {"form" : form})
