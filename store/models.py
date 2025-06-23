@@ -7,7 +7,7 @@ class prodotto(models.Model):
     nome = models.CharField(max_length=100)
     descrizione = models.CharField(max_length=300)
     prezzo = models.FloatField()
-    categoria = models.CharField(max_length=15, default="None")
+    categoria = models.CharField(max_length=30, default="None")
     visibile = models.BooleanField(default=True)
 
     def __str__(self):

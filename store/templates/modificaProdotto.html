@@ -25,7 +25,7 @@
 
 {% block content %}
     <h3 >Modifica prodotto</h3>
-    <form method="post" action="/gestioneProdotti/">
+    <form method="post" action="/gestioneProdotti">
         {% csrf_token %}
         <div>
             <input type="hidden" name="idProdotto" value="{{ prodottoDaModificare.id }}">

@@ -3,31 +3,31 @@ from . import views
 from .views import ProductListView
 
 urlpatterns = [
+    path('', ProductListView.as_view(), name='home'),
+
     path("home/", ProductListView.as_view(), name="home"),
 
-    path("cliente/", views.cliente, name="cliente"),
+    path("cliente", views.cliente, name="cliente"),
 
-    path("aggiungiProdotto/", views.aggiungiProdotto, name="aggiungiProdotto"),
+    path("aggiungiProdotto", views.aggiungiProdotto, name="aggiungiProdotto"),
 
-    path("gestioneProdotti/", views.gestioneProdotti, name="gestioneProdotti"),
+    path("gestioneProdotti", views.gestioneProdotti, name="gestioneProdotti"),
 
-    path("gestioneAcquisto/", views.gestioneAcquisto, name="gestioneAcquisto"),
+    path("gestioneAcquisto", views.gestioneAcquisto, name="gestioneAcquisto"),
 
-    path("aggiungiAlCarrello/", views.aggiungiAlCarrello, name="aggiungiAlCarrello"),
+    path("aggiungiAlCarrello", views.aggiungiAlCarrello, name="aggiungiAlCarrello"),
 
-    path("effettuaOrdine/", views.effettuaOrdine, name="effettuaOrdine"),
+    path("effettuaOrdine", views.effettuaOrdine, name="effettuaOrdine"),
 
-    path("revisioneOrdine/", views.revisioneOrdine, name="revisioneOrdine"),
+    path("revisioneOrdine", views.revisioneOrdine, name="revisioneOrdine"),
 
-    path("gestioneCarrello/", views.gestioneCarrello, name="gestioneCarrello"),
+    path("gestioneCarrello", views.gestioneCarrello, name="gestioneCarrello"),
 
-    path("salvaPagamento/", views.salvaPagamento, name="salvaPagamento"),
+    path("salvaPagamento", views.salvaPagamento, name="salvaPagamento"),
 
-    path("vediOrdine/", views.vediOrdine, name="vediOrdine"),
+    path("vediOrdine", views.vediOrdine, name="vediOrdine"),
 
-    path("cronologiaOrdini/", views.cronologiaOrdini, name="cronologiaOrdini"),
+    path("cronologiaOrdini", views.cronologiaOrdini, name="cronologiaOrdini"),
 
-    path('carrello/',views.gestioneCarrello, name='viewCarrello'),
-
-    path('', ProductListView.as_view(), name='home'),
+    path('carrello',views.gestioneCarrello, name='viewCarrello'),
 ]

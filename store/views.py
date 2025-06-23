@@ -41,7 +41,7 @@ def aggiungiProdotto(request):
             c = form.cleaned_data["categoria"]
             nuovoP = prodotto(nome=n, descrizione=d, prezzo=p, categoria=c)
             nuovoP.save()
-            return HttpResponseRedirect("gestioneProdotti")
+            return HttpResponseRedirect("/gestioneProdotti")
         else:
             print("Form non valido")
     else:
@@ -55,7 +55,7 @@ def gestioneProdotti(request):
             idP = request.POST.get("idP")
             pDaGestire = prodotto.objects.get(id=idP)
             if "aggiungiProdottoForm" in request.POST:
-                return HttpResponseRedirect("aggiungiProdotti")
+                return HttpResponseRedirect("/aggiungiProdotti")
             if "modificarProdottoForm" in request.POST:
                 form = modificaProdottoForm()
                 return render(request, 'modificaProdotto.html', {"pDaGestire": pDaGestire, "form": form})
@@ -84,31 +84,32 @@ def gestioneProdotti(request):
         else:
             return render(request, "gestioneProdotti.html")
     else:
-        return HttpResponseRedirect("login")
+        return HttpResponseRedirect("/login")
 
 def gestioneAcquisto(request):
     if request.user.is_authenticated:
-        if request.method == "POST":
-            idP = request.POST.get("idP")
+        if request.method == 'POST':
+
+            idProdotto = request.POST.get("idProdotto")
             quantita = request.POST.get("quantita")
-            pDaGestire = prodotto.objects.get(id=idP)
+            prodottoDaGestire = prodotto.objects.get(id=idProdotto)
             if quantita == "":
                 quantita = 1
-            print("Gestione Acquisto")
-            print("id prodotto: "+str(idP))
-            print("quantita: "+str(quantita))
+            print("GESTIONE ACQUISTO")
+            print("idProdotto: " + str(idProdotto))
+            print("quantita: " + str(quantita))
 
-            if "aggiungiAlCarrelloButton" in request.POST:
-                for prod in carrello.objects.filter(cliente=request.user):
-                    if prod.prodotto.id == int(idP):
-                        prod.quantita += int(quantita)
-                        prod.save()
-                        return HttpResponseRedirect("home")
-                nuovoProd = carrello(prodotto=pDaGestire, cliente=request.user, quantita=quantita)
-                nuovoProd.save()
-                return HttpResponseRedirect("home")
+            if 'aggiungiAlCarrelloButton' in request.POST:
+                for prodotto in carrello.objects.filter(cliente=request.user):
+                    if prodotto.prodotto.id == int(idProdotto):
+                        prodotto.quantita += int(quantita)
+                        prodotto.save()
+                        return HttpResponseRedirect("/home")
+                nuovoProdottoCarrello = carrello(prodotto=prodottoDaGestire, cliente=request.user, quantita=quantita)
+                nuovoProdottoCarrello.save()
+                return HttpResponseRedirect("/home")
     else:
-        return HttpResponseRedirect("login")
+        return HttpResponseRedirect("/login")
 
 def aggiungiAlCarrello(request):
     if request.user.is_authenticated:
@@ -121,12 +122,12 @@ def aggiungiAlCarrello(request):
                 if prod.prodotto.id == int(idP):
                     prod.quantita += int(quantita)
                     prod.save()
-                    return HttpResponseRedirect("home")
+                    return HttpResponseRedirect("/home")
             nuovoProd = carrello(prodotto=prodotto.objects.get(id=idP), cliente=request.user, quantita=quantita)
             nuovoProd.save()
-            return HttpResponseRedirect("home")
+            return HttpResponseRedirect("/home")
     else:
-        return HttpResponseRedirect("login")
+        return HttpResponseRedirect("/login")
 
 def effettuaOrdine(request):
     nuovoOrdine = ordine(cliente=request.user)
@@ -147,7 +148,7 @@ def revisioneOrdine(request):
             pDaGestire.save()
             if pDaGestire.quantita==0:
                 pDaGestire.delete()
-                return HttpResponseRedirect("carrello")
+                return HttpResponseRedirect("/carrello")
         if "aumentaQuantita" in request.POST:
             pDaGestire = carrello.objects.get(id=idP)
             pDaGestire.quantita += 1
@@ -155,7 +156,7 @@ def revisioneOrdine(request):
         if "rimuoviOggetto" in request.POST:
             pDaGestire = carrello.objects.get(id=idP)
             pDaGestire.delete()
-            return HttpResponseRedirect("carrello")
+            return HttpResponseRedirect("/carrello")
         prodCarrello = carrello.objects.filter(cliente=request.user)
         tot = prodCarrello.annotate(subtotale=F("quantita")*F("prodotto__prezzo")).aggregate(Sum("subtotale"))["subtotale__sum"] or 0
 
@@ -170,7 +171,7 @@ def gestioneCarrello(request):
             pDaGestire.save()
             if pDaGestire.quantita==0:
                 pDaGestire.delete()
-                return HttpResponseRedirect("carrello")
+                return HttpResponseRedirect("/carrello")
         if "aumentaQuantita" in request.POST:
             pDaGestire = carrello.objects.get(id=idP)
             pDaGestire.quantita += 1
@@ -178,7 +179,7 @@ def gestioneCarrello(request):
         if "rimuoviOggetto" in request.POST:
             pDaGestire = carrello.objects.get(id=idP)
             pDaGestire.delete()
-            return HttpResponseRedirect("carrello")
+            return HttpResponseRedirect("/carrello")
         carrelloCliente = carrello.objects.filter(cliente=request.user).select_related("prodotto")
         tot =carrelloCliente.annotate(subtotale=F('quantita') * F('prodotto__prezzo')).aggregate(Sum('subtotale'))['subtotale__sum'] or 0
         return render(request, 'carrello.html', {"carrelloCliente": carrelloCliente, "totale": tot})
@@ -193,7 +194,7 @@ def salvaPagamento(request):
         print("Numero carta: ", daPagare.carta)
         daPagare.cvv = request.POST.get("cvv")
         daPagare.save()
-        return HttpResponseRedirect("home")
+        return HttpResponseRedirect("/home")
 
 def vediOrdine(request):
     if request.method == "POST":
