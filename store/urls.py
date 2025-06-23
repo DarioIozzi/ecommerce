@@ -7,9 +7,9 @@ urlpatterns = [
 
     path("home/", ProductListView.as_view(), name="home"),
 
-    path("cliente", views.cliente, name="cliente"),
+    path("cliente/", views.cliente, name="cliente"),
 
-    path("aggiungiProdotto", views.aggiungiProdotto, name="aggiungiProdotto"),
+    path("aggiungiProdotto/", views.aggiungiProdotto, name="aggiungiProdotto"),
 
     path("gestioneProdotti", views.gestioneProdotti, name="gestioneProdotti"),
 
@@ -19,7 +19,7 @@ urlpatterns = [
 
     path("effettuaOrdine", views.effettuaOrdine, name="effettuaOrdine"),
 
-    path("revisioneOrdine", views.revisioneOrdine, name="revisioneOrdine"),
+    path("revisioneOrdine/", views.revisioneOrdine, name="revisioneOrdine"),
 
     path("gestioneCarrello", views.gestioneCarrello, name="gestioneCarrello"),
 

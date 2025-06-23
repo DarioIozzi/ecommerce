@@ -24,7 +24,7 @@ Revisione dell'Ordine
         
         <form method="post" action="#" class="form-group form-orizzontale">
             {% csrf_token %}
-            <input type="hidden" name="idProdotto" value="{{prodotto.id}}">
+            <input type="hidden" name="idP" value="{{prodotto.id}}">
             <span class="input-group-text" >{{ prodotto.quantita }}x</span>
             <span class="input-group-text" >{{ prodotto.prodotto }}</span>
             <button class="bottoneModificatore" type="submit" name="diminuisciQuantitaOggetto"><span class="input-group-text">-</span></button>
@@ -37,7 +37,7 @@ Revisione dell'Ordine
             
     <h3>Totale: {{ totale }} €</h3>
 
-    <form method="post" action="effettuaOrdine" class="form-group">
+    <form method="post" action="{% url 'effettuaOrdine' %}" class="form-group">
         {% csrf_token %}
         
         <button type="submit" class="btn btn-primary">Conferma e vai al pagamento</button>

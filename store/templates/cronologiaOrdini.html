@@ -26,9 +26,9 @@ I tuoi Ordini
 {% block content %}
 
     <h1>I tuoi Ordini</h1>
-        {% if ordiniCliente %}
+        {% if ordini %}
 
-            {% for ordine in ordiniCliente %}
+            {% for ordine in ordini %}
                 <form method="POST" action="/vediOrdine">
                     {% csrf_token %}
                     <input type="hidden" name="idOrdine" value="{{ordine.id}}">

@@ -53,7 +53,7 @@
             <form method="post" action="/gestioneAcquisto" class="form-group">
                 {% csrf_token %}
                 <div class="singoloProdotto">
-                    <input type="hidden" name="idProdotto" value="{{ prodotto.id }}">
+                    <input type="hidden" name="idP" value="{{ prodotto.id }}">
                     <div class="singoloCampoProdotto">
                         <h5>{{ prodotto.nome }}</h5>
                     </div>
@@ -67,7 +67,7 @@
                         <h6>{{ prodotto.categoria }}</h6>
                     </div>
                     <div class="singoloCampoProdotto">
-                        <input class="testoCentrato" type="number" name="numeroPezzi" placeholder="Inserisci la quantità">
+                        <input class="testoCentrato" type="number" name="quantita" placeholder="Inserisci la quantità">
                     </div>
                     <div class="singoloCampoProdotto">
                         <button type="submit" name="aggiungiAlCarrelloButton" class="btn btn-primary">Aggiungi al carrello</button>

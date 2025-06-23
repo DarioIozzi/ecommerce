@@ -34,7 +34,7 @@ Ordine
     <h4>Prodotti </h4>
     {% for prodotto in prodottiDellOrdine %}
         <div class="singoloProdotto">
-            <input type="hidden" name="idProdotto" value="{{prodotto.id}}">
+            <input type="hidden" name="idP" value="{{prodotto.id}}">
             <div class="singoloCampoProdotto">
                 <h6>{{prodotto.prodotto.nome}}</h6>
             </div>

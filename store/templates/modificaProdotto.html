@@ -28,18 +28,18 @@
     <form method="post" action="/gestioneProdotti">
         {% csrf_token %}
         <div>
-            <input type="hidden" name="idProdotto" value="{{ prodottoDaModificare.id }}">
+            <input type="hidden" name="idP" value="{{pDaGestire.id}}">
             <div class="campo">
                 <p>Modifica Nome prodotto</p>
-                <input type="text" name="nuovoNome" placeholder="{{prodottoDaModificare.nome}}" class="form-control">
+                <input type="text" name="nuovoNome" placeholder="{{pDaGestire.nome}}" class="form-control">
             </div>
             <div class="campo">
                 <p>Modifica Descrizione prodotto</p>
-                <input type="text" name="nuovaDescrizione" placeholder="{{ prodottoDaModificare.descrizione }}" class="form-control" >
+                <input type="text" name="nuovaDescrizione" placeholder="{{ pDaGestire.descrizione }}" class="form-control" >
             </div>
             <div class="campo">
                 <p>Modifica Prezzo prodotto</p>
-                <input type="number" step="any" name="nuovoPrezzo" placeholder="{{ prodottoDaModificare.prezzo }} €" class="form-control">
+                <input type="number" step="any" name="nuovoPrezzo" placeholder="{{ pDaGestire.prezzo }} €" class="form-control">
             </div>
             <div class="bottoniSubmit">
                 <button type="submit" name="annullaModifiche" class="btn btn-primary bottone">Annulla modifiche</button>

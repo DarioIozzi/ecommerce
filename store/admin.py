@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import prodotto, carrello , ordine, ordineProdotto
+from .models import Prodotto, Carrello , Ordine, OrdineProdotto
 
 # Register your models here.
-admin.site.register(prodotto)
-admin.site.register(carrello)
-admin.site.register(ordine)
-admin.site.register(ordineProdotto)
+admin.site.register(Prodotto)
+admin.site.register(Carrello)
+admin.site.register(Ordine)
+admin.site.register(OrdineProdotto)

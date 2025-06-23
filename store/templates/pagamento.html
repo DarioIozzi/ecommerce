@@ -28,32 +28,24 @@ Pagamento
 
 {% block content %}
 
-    <form method="POST" action="salvaPagamento" class="form-pagamento">
+    <form method="POST" action="{% url 'salvaPagamento' %}" class="form-pagamento">
         {% csrf_token %}
 
-        <!-- Mostra i dettagli dell'ordine -->
         <h4>Dettagli dell'ordine</h4>
         <p>ID ordine : {{ nuovoOrdine.id }}</p>
         <p>Totale: {{ totale }}€</p>
 
-        <!-- Campi per i dati del pagamento -->
         <h4>Informazioni per il pagamento</h4>
         <input type="hidden" name="idOrdine" value="{{ nuovoOrdine.id }}">
         <div class="elementoForm">
             <span class="spanElemntoForm">Numero della Carta :</span>
-            <input type="text" name="numeroCarta" >
-        </div>
-        <div class="elementoForm">
-            <span class="spanElemntoForm">Data di Scadenza :</span>
-            <input type="date" name="dataScadenzaCarta" placeholder="MM/AAAA" >
+            <input type="text" name="carta" maxlength="16">
         </div>
         <div class="elementoForm">
             <span class="spanElemntoForm">CVV :</span>
-            <input type="text" name="cvvCarta" >
+            <input type="text" name="cvv" maxlength="3">
         </div>
 
-
-        <!-- Pulsante di invio per elaborare il pagamento -->
         <button type="submit" name="salvaPagamento" class="btn btn-primary">Paga Ora</button>
     </form>
 
