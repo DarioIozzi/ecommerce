@@ -1,116 +1,74 @@
 {% extends 'base.html' %}
 
 {% block styleCSS %} 
-    <style>
-        .formRicerca{
-            margin-bottom: 15px;
-        }
-        .form-prodotto{
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f2f2f2;
-        }
-        .testoCentrato{
-            text-align: center;
-        }
-        .singoloProdotto{
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding : 10px;
-            border: 1px solid black;
-            border-radius: 10px;
-        }
-        .singoloCampoProdotto{
-            margin-bottom: 5px;
-        }
-        input{
-            border: 1px solid black;
-            border-radius: 10px;
-        }
-    </style>
+<style>
+    .formRicerca {
+        margin-bottom: 15px;
+    }
+    .form-prodotto {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f2f2f2;
+    }
+    .testoCentrato {
+        text-align: center;
+    }
+    .singoloProdotto {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid black;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+    .singoloCampoProdotto {
+        margin-bottom: 5px;
+    }
+    input {
+        border: 1px solid black;
+        border-radius: 10px;
+    }
+</style>
 {% endblock %}
 
-{% block title%} 
-Home Page
-{% endblock %}
+{% block title %}Home Page{% endblock %}
 
 {% block content %}
 
-    <h1 class="mt-2">Ricerca un prodotto o una categoria</h1>
-    <form class="formRicerca" action="#" method="POST">
-        {% csrf_token %}
-        {{form}}
-        <input type="submit" name="ricerca" value="Cerca">
-    </form>    
-    {% if prodottiTrovati %}
-        <div class=" form-prodotto">
-            {% for prodotto in prodottiTrovati %}
-                <form method="post" action="/gestioneAcquisto" class="form-group">
-                    {% csrf_token %}
+<h1 class="mt-2">Ricerca un prodotto o una categoria</h1>
 
-                    <div class="singoloProdotto">
-                        <input type="hidden" name="idProdotto" value="{{prodotto.id}}">
-                        <div class="singoloCampoProdotto">
-                            <h5>{{prodotto.nome}}</h5>
-                        </div>
-                        <div class="singoloCampoProdotto">
-                            <span>{{prodotto.descrizione}}</span>
-                        </div>
-                        <div class="singoloCampoProdotto">
-                            <h6>{{prodotto.prezzo}}€</h6>
-                        </div>
-                        <div class="singoloCampoProdotto">
-                            <h6 >{{ prodotto.categoria }}</h6>
-                        </div>
-                        <div class="singoloCampoProdotto">
-                            <input class="testoCentrato" type="number" name="numeroPezzi" placeholder="Inserisci la quantità">
-                        </div>
+<form class="formRicerca" method="get" action="">
+    {{ form.as_p }}
+    <input type="submit" value="Cerca">
+</form>
 
-                        <div class="singoloCampoProdotto">
-                            <button type="submit" name="acquistaOraButton" class="btn btn-primary">Acquista ora</button>
-                            <button type="submit" name="aggiungiAlCarrelloButton" class="btn btn-primary">aggiungi al carrello</button>
-                        </div>
-                    </div>
-
-                </form>
-            {% endfor %}
-        </div>
-    {% else %}
-        {% if request.method == 'POST'%}
-            <h3 class="mt-2">Nessun prodotto trovato</h3>
-        {% endif %}    
-    {% endif %}
-
-    <hr class="mt-0 mb-4">
-
-    <h1 class="mt-2">Vetrina</h1>
-    {% if prodottiInVendita %}
+{% if prodottiInVendita %}
+    <div class="form-prodotto">
         {% for prodotto in prodottiInVendita %}
-            <form method="post" action="/gestioneAcquisto" class="form-group form-orizzontale">
+            <form method="post" action="/gestioneAcquisto" class="form-group">
                 {% csrf_token %}
                 <div class="singoloProdotto">
-                    <input type="hidden" name="idProdotto" value="{{prodotto.id}}">
+                    <input type="hidden" name="idProdotto" value="{{ prodotto.id }}">
                     <div class="singoloCampoProdotto">
-                        <h5>{{prodotto.nome}}</h5>
+                        <h5>{{ prodotto.nome }}</h5>
                     </div>
                     <div class="singoloCampoProdotto">
-                        <span>{{prodotto.descrizione}}</span>
+                        <span>{{ prodotto.descrizione }}</span>
                     </div>
                     <div class="singoloCampoProdotto">
-                        <h6>{{prodotto.prezzo}}€</h6>
+                        <h6>{{ prodotto.prezzo }}€</h6>
                     </div>
                     <div class="singoloCampoProdotto">
-                        <h6 >{{ prodotto.categoria }}</h6>
+                        <h6>{{ prodotto.categoria }}</h6>
                     </div>
                     <div class="singoloCampoProdotto">
                         <input class="testoCentrato" type="number" name="numeroPezzi" placeholder="Inserisci la quantità">
                     </div>
-
                     <div class="singoloCampoProdotto">
                         <button type="submit" name="acquistaOraButton" class="btn btn-primary">Acquista ora</button>
                         <button type="submit" name="aggiungiAlCarrelloButton" class="btn btn-primary">Aggiungi al carrello</button>
@@ -118,8 +76,13 @@ Home Page
                 </div>
             </form>
         {% endfor %}
+    </div>
+{% else %}
+    {% if request.GET.ricerca %}
+        <h3 class="mt-2">Nessun prodotto trovato per "{{ request.GET.ricerca }}"</h3>
     {% else %}
         <h2 class="mt-2">Nessun prodotto in vendita</h2>
     {% endif %}
-    
+{% endif %}
+
 {% endblock %}

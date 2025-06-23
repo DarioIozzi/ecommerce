@@ -3,23 +3,29 @@ from django.http import HttpResponseRedirect
 from store.models import prodotto, ordine, ordineProdotto, carrello
 from .forms import *
 from django.db.models import F,Sum,Q
+from django.views.generic import ListView
 
 # Create your views here.
-def home(request):
-    prodotti = prodotto.objects.filter(visibile=True)
-    if request.method == "POST":
-        form = cercaProdottoForm(request.POST)
-        if 'ricerca' in request.POST:
-            if form.is_valid():
-                ricerca = form.cleaned_data["ricerca"]
-                prodottiTrovati = prodotto.objects.filter((Q(nome__contains=ricerca) | Q(descrizione__contains=ricerca) | Q(categoria__contains=ricerca)) &Q(visibile=True))
-                return render(request, 'home.html', {"form": form, "prodottiTrovati": prodottiTrovati, "prodottiInVendita": prodotti})
-        else:
-            form = cercaProdottoForm()
-            return render(request, "home.html", {"form": form, "prodottiInVendita": prodotti})
-    else:
-        form = cercaProdottoForm()
-        return render(request, "home.html", {"form": form, "prodottiInVendita": prodotti})
+class ProductListView(ListView):
+    model = prodotto
+    template_name = 'home.html'
+    context_object_name = 'prodottiInVendita'
+
+    def get_queryset(self):
+        queryset = prodotto.objects.filter(visibile=True)
+        ricerca = self.request.GET.get("ricerca", "")
+        if ricerca:
+            queryset = queryset.filter(
+                Q(nome__icontains=ricerca) |
+                Q(descrizione__icontains=ricerca) |
+                Q(categoria__icontains=ricerca)
+            )
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = cercaProdottoForm(self.request.GET or None)
+        return context
 
 def cliente(response):
     return render(response, 'cliente.html', {})

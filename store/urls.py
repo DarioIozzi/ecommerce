@@ -1,10 +1,9 @@
 from django.urls import path , include
 from . import views
+from .views import ProductListView
 
 urlpatterns = [
-    path("", views.home),
-
-    path("home/", views.home, name="home"),
+    path("home/", ProductListView.as_view(), name="home"),
 
     path("cliente/", views.cliente, name="cliente"),
 
@@ -29,4 +28,6 @@ urlpatterns = [
     path("cronologiaOrdini/", views.cronologiaOrdini, name="cronologiaOrdini"),
 
     path('carrello/',views.gestioneCarrello, name='viewCarrello'),
+
+    path('', ProductListView.as_view(), name='home'),
 ]
