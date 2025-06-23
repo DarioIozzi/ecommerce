@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title%} 
+Aggiungi Prodotto
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <h3 >Aggiungi un nuovo prodotto</h3>
+
+    <form method="post" action="/aggiungiProdotto/">
+        {% csrf_token %}
+        <div>
+            {{form | crispy}}
+            <button type="submit" name="save" class="btn btn-success">Aggiungi</button>
+        </div>
+    </form>
+
+
+
+{% endblock %}
