@@ -134,3 +134,6 @@ REGISTRATION_REDIRECT_URL="/login/"
 
 LOGIN_REDIRECT_URL="/cliente/"
 LOGOUT_REDIRECT_URL="/"
+CSRF_TRUSTED_ORIGINS = [
+    'https://ecommerce-production-bc7f.up.railway.app',
+]
