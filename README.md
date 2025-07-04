@@ -3,4 +3,4 @@ Una volta effettuato il login cone le credenziali scritte nel file "credenziali"
 L'admin può invece gestire i prodotti in vendita, modificarne gli attributi, renderli invisibili e viceversa, aggiungerne nuovi o eliminarli.
 Si può creare nuovi account tramite il relativo form.
 Il sito permetta la ricerca e visualizzazione di prodotti anche se non registrati.
-Link deployment: ecommerce-production-bc7f.up.railway.app
+Link deployment: https://ecommerce-production-bc7f.up.railway.app
