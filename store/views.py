@@ -88,9 +88,10 @@ def gestioneAcquisto(request):
         if request.method == 'POST':
 
             idP = request.POST.get("idP")
-            quantita = request.POST.get("quantita")
+            quantita_str = request.POST.get("quantita", "1")
             prodottoDaGestire = Prodotto.objects.get(id=idP)
-            if not quantita:
+            quantita = int(quantita_str)
+            if quantita <= 0:
                 quantita = 1
             print("GESTIONE ACQUISTO")
             print("idProdotto: " + str(idP))
@@ -110,14 +111,18 @@ def gestioneAcquisto(request):
 
 def aggiungiAlCarrello(request):
     if request.user.is_authenticated:
-        idP = request.POST.get("idP")
-        quantita = request.POST.get("quantita")
-        if not quantita:
-            quantita = 1
+
         if "aggiungiAlCarrelloButton" in request.POST:
+            idP = request.POST.get("idP")
+            quantita_str = request.POST.get("quantita", "1")
+
+            quantita = int(quantita_str)
+            if quantita <= 0:
+                quantita = 1
+
             for prod in Carrello.objects.filter(cliente=request.user):
                 if prod.prodotto.id == int(idP):
-                    prod.quantita += int(quantita)
+                    prod.quantita += quantita
                     prod.save()
                     return HttpResponseRedirect("/home")
             nuovoProd = Carrello(prodotto=Prodotto.objects.get(id=idP), cliente=request.user, quantita=quantita)
